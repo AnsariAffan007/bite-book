@@ -3,20 +3,22 @@
 import StepNode from '@/components/StepNode'
 import useInitialSteps from '@/views/StepsDetail/useInitialSteps'
 import { Box } from '@mui/material'
-import { Background, Edge, ReactFlow } from '@xyflow/react'
+import { Background, ReactFlow, useEdgesState, useNodesState } from '@xyflow/react'
 import '@xyflow/react/dist/style.css';
-import React, { useMemo } from 'react'
+import React from 'react'
 
-const Page = () => {
+const Page = ({ params }: any) => {
 
-  const INITIAL_EDGES: Edge[] = useMemo(() => [], [])
-  const { INITIAL_NODES } = useInitialSteps()
+  const [nodes, setNodes] = useNodesState<any>([]);
+  const [edges, setEdges] = useEdgesState<any>([]);
+
+  useInitialSteps(() => { }, params.id, setNodes, setEdges)
 
   return (
-    <Box my={4} width='100%' height='70vh' border="1px solid #aaa" position="relative">
+    <Box my={2} width='100%' height='70vh' borderTop="1px solid #aaa" position="relative">
       <ReactFlow
-        nodes={INITIAL_NODES}
-        edges={INITIAL_EDGES}
+        nodes={nodes}
+        edges={edges}
         fitView
         nodeTypes={{
           myNode: StepNode
