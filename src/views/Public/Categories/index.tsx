@@ -1,5 +1,3 @@
-'use client';
-
 import CategoryCard from "@/components/Categories/CategoryCard";
 import { Box, Grid, Typography } from "@mui/material";
 
