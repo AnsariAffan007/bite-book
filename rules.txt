@@ -1,0 +1,18 @@
+when putting edges, update nodes data connection
+
+when putting data connection, update edges
+
+when updating connection, connection will always be through source bottom handle, to target top handle
+
+From one node, only one edge can emerge.
+One to many not possible (Because if i allow, then what handles to connect to becomes an issue)
+Many to one conections are possible
+
+
+PROBLEM:-
+Editing recipe deletes all ingredients. so inside of the map all step ingredients will become empty
+SOLN:-
+Separate API for ingredients
+While creating recipe, send array with recipe POST.
+While editing, use separate POST, PUT, DELETE for each ingredients.
+UI: two separateb big cards. ingredients card will come after detail one.

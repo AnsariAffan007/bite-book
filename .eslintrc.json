@@ -1,0 +1,24 @@
+{
+  "extends": "next/core-web-vitals",
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module",
+    "project": "./tsconfig.json" // Ensure ESLint is using the correct tsconfig
+  },
+  "plugins": [
+    "react",
+    "@typescript-eslint"
+  ],
+  "rules": {
+    "no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_"
+      }
+    ],
+    "react/jsx-uses-react": "off", // Off because with react-jsx you don't need the import
+    "react/jsx-uses-vars": "error", // Don't flag JSX components as unused
+    "unused-imports/no-unused-imports": "error" // If you're using unused-imports plugin
+  }
+}

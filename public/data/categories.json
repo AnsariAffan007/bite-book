@@ -1,0 +1,52 @@
+[
+  {
+    "id": 1,
+    "name": "Appetizer",
+    "description": "A small dish served before the main course to stimulate the appetite."
+  },
+  {
+    "id": 2,
+    "name": "Salad",
+    "description": "A dish consisting of a mixture of small pieces of food, usually vegetables or fruit, sometimes with a dressing."
+  },
+  {
+    "id": 3,
+    "name": "Main Course",
+    "description": "The main dish of a meal."
+  },
+  {
+    "id": 4,
+    "name": "Dessert",
+    "description": "A sweet course typically eaten at the end of a meal."
+  },
+  {
+    "id": 5,
+    "name": "Beverage",
+    "description": "A drink, especially one other than water."
+  },
+  {
+    "id": 6,
+    "name": "Soup",
+    "description": "A liquid dish, typically made by boiling meat, fish, or vegetables, etc., in stock or water."
+  },
+  {
+    "id": 7,
+    "name": "Sandwich",
+    "description": "A food typically consisting of vegetables, sliced cheese or meat, placed on or between slices of bread."
+  },
+  {
+    "id": 8,
+    "name": "Pizza",
+    "description": "A dish of Italian origin, consisting of a flat, round base of dough baked with a topping of tomatoes and cheese."
+  },
+  {
+    "id": 9,
+    "name": "Pasta",
+    "description": "A dish originally from Italy consisting of dough made from durum wheat and water, extruded or stamped into various shapes, and typically cooked in boiling water."
+  },
+  {
+    "id": 10,
+    "name": "Sushi",
+    "description": "A Japanese dish consisting of small balls or rolls of vinegar-flavored cold cooked rice served with a garnish of raw fish, vegetables, or egg."
+  }
+]
