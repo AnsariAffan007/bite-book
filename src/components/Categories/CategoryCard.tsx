@@ -5,7 +5,7 @@ import { theme } from '@/themes/theme'
 import { Card, CardContent, Typography } from '@mui/material'
 import React from 'react'
 
-const CategoryCard = ({ name, description }) => {
+const CategoryCard = ({ name, description }: any) => {
   return (
     <Card elevation={0} sx={{ backgroundColor: getShade(0, 0.03), minHeight: 200 }}>
       <CardContent>

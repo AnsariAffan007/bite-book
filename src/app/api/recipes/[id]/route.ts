@@ -27,6 +27,7 @@ export async function GET(_req: Request, { params }: { params: { id: string } })
     return NextResponse.json({ message: "Successfully retrieved recipe", data: { ...recipe[0], ingredients: [...ingredients] } }, { status: 200 })
   }
   catch (e) {
+    console.log("Error fetching recipe: ", e)
     return NextResponse.json({ message: "Could not retrieve recipe! Please contact admin", error: e }, { status: 500 })
   }
 }
