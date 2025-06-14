@@ -1,8 +1,25 @@
 import { db } from "@/db"
 import { ingredientsTable } from "@/db/schemas/ingredients"
 import { authenticateSession } from "@/utils/sessions"
+import { eq } from "drizzle-orm"
 import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
+
+export async function GET(_req: Request, { params }: { params: { id: any } }) {
+  try {
+    const recipeId = params.id
+
+    const ingredients = await db
+      .select()
+      .from(ingredientsTable)
+      .where(eq(ingredientsTable.recipeId, recipeId))
+
+    return NextResponse.json({ message: "Successfully retrieved ingredients", data: [...ingredients] }, { status: 200 })
+  }
+  catch (e) {
+    return NextResponse.json({ message: "Could not retrieve recipes! Please contact admin", error: e }, { status: 500 })
+  }
+}
 
 export async function POST(req: Request) {
   try {
