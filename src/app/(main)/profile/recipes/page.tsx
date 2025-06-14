@@ -26,12 +26,15 @@ const ProfileRecipes = () => {
 
   const router = useRouter();
 
+  const [loading, setLoading] = useState(false);
+
   const [recipes, setRecipes] = useState<any>([])
   // #region FETCHER
   // <-------------------- FETCHING RECIPES ----------------------->
   const fetchRecipes = useCallback(async (
     search: string
   ) => {
+    setLoading(true);
     try {
       const res = await axios.get(`/api/recipes?search=${search}`);
       setRecipes(res?.data?.data)
@@ -43,6 +46,7 @@ const ProfileRecipes = () => {
       )
       console.log("Error fetcing recipes: ", e)
     }
+    setLoading(false);
   }, [])
   useEffect(() => {
     fetchRecipes('')
@@ -70,6 +74,20 @@ const ProfileRecipes = () => {
   const handleEditClick = (recipeId: number) => {
     router.push(`/profile/recipes/${recipeId}`)
   }
+
+  const handleDelete = useCallback(async (rowId: number) => {
+    setLoading(true)
+    try {
+      await axios.delete(`/api/recipes/${rowId}`, {});
+      enqueueSnackbar('Recipe deleted successfully', { variant: 'success' })
+      return fetchRecipes('')
+    }
+    catch (e) {
+      console.log("Error deleting recipe: ", e);
+      enqueueSnackbar(e?.response?.data?.message || 'Error deleting Recipe', { variant: 'error' })
+    }
+    setLoading(false)
+  }, [])
 
   // #region JSX Start
   return (
@@ -167,7 +185,8 @@ const ProfileRecipes = () => {
               <ActionCell
                 editState={false}
                 onEditHandler={() => handleEditClick(row.id)}
-                onDeleteHandler={() => { }}
+                onDeleteHandler={() => handleDelete(row.id)}
+                loading={loading}
               />
             ),
             thProps: { sx: { width: '150px' } }

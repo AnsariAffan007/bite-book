@@ -5,7 +5,7 @@ export const stepConnectionsTable = pgTable(
   'step_connections',
   {
     id: integer().primaryKey().generatedAlwaysAsIdentity(),
-    recipeId: integer().notNull().references(() => recipesTable.id),
+    recipeId: integer().notNull().references(() => recipesTable.id, { onDelete: 'cascade' }),
     sourceStepId: varchar('source_step_id', { length: 10 }).notNull(),
     targetStepId: varchar('target_step_id', { length: 10 }).notNull(),
     sourceHandle: varchar('source_handle', { enum: ['source-top-1', 'source-right-2', 'source-bottom-3', 'source-left-4'] }).notNull(),

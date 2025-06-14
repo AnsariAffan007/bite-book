@@ -112,6 +112,7 @@ export async function POST(req: Request, { params }: { params: { id: string } })
     return NextResponse.json({ message: "Successfully saved recipe steps" }, { status: 200 })
   }
   catch (e) {
+    console.log("Error editing Map: ", e)
     return NextResponse.json({ message: 'Internal Server Error, please contact admin', error: e }, { status: 500 })
   }
 }

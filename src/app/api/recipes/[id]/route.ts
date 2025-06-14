@@ -67,3 +67,24 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
     return NextResponse.json({ message: "Failed to update recipe.", error: e }, { status: 500 })
   }
 }
+
+export async function DELETE(_req: Request, { params }: { params: { id: string } }) {
+  try {
+    const sessionId = cookies().get('session_id')?.value;
+    const { authenticated, expired, message }: any = await authenticateSession(sessionId)
+    if (authenticated && expired) {
+      return NextResponse.json({ message: message }, { status: 401 })
+    }
+
+    const recipeId: any = params.id
+    await db
+      .delete(recipesTable)
+      .where(eq(recipesTable.id, recipeId))
+
+    return new Response(null, { status: 204 });
+  }
+  catch (e) {
+    console.log("Error: ", e)
+    return NextResponse.json({ message: "Failed to delete recipe.", error: e }, { status: 500 })
+  }
+}
