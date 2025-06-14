@@ -4,7 +4,7 @@ import Table from '@/components/Table'
 import { getShade } from '@/styles/shader'
 import { Add, Search } from '@mui/icons-material'
 import { Box, Button, InputAdornment, OutlinedInput, Stack, Typography } from '@mui/material'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { Suspense, useCallback, useEffect, useState } from 'react'
 import ActionCell from '@/components/Table/ActionCell';
 import useEditableRows from '@/hooks/useEditableRows';
 import { FormikProps } from 'formik';
@@ -117,87 +117,89 @@ const ProfileCategories = () => {
   }, [addState, changeEditableRow, setCategories])
 
   return (
-    <Box sx={{ backgroundColor: getShade(255, 0.2) }}>
-      <Stack direction="row" justifyContent="space-between" alignItems="center" p={{ xs: 1, md: 3 }}>
-        <OutlinedInput
-          size='small'
-          placeholder='Search'
-          startAdornment={
-            <InputAdornment position='start'>
-              <Search sx={{ fontSize: '1rem' }} />
-            </InputAdornment>
-          }
-        />
-        <Button
-          variant='contained'
-          color='primary'
-          size='small'
-          startIcon={<Add />}
-          disableElevation
-          disableRipple
-          onClick={() => handleAddClick(addState)}
-        >
-          Add
-        </Button>
-      </Stack>
-
-      <Table
-        columns={[
-          {
-            accessor: "name",
-            header: "Name",
-            cell: (row: Category) => <>{row.name}</>,
-            thProps: { sx: { minWidth: '200px', width: '200px' } },
-            editable: true
-          },
-          {
-            accessor: "description",
-            header: "Description",
-            cell: (row: Category) => <>{row.description}</>,
-            editable: true,
-            inputProps: {
-              multiline: true,
-              maxRows: 3
+    <Suspense>
+      <Box sx={{ backgroundColor: getShade(255, 0.2) }}>
+        <Stack direction="row" justifyContent="space-between" alignItems="center" p={{ xs: 1, md: 3 }}>
+          <OutlinedInput
+            size='small'
+            placeholder='Search'
+            startAdornment={
+              <InputAdornment position='start'>
+                <Search sx={{ fontSize: '1rem' }} />
+              </InputAdornment>
             }
-          },
-          {
-            accessor: "numberOfRecipes",
-            header: "Number of Recipes",
-            cell: (row: Category) => <>{row.recipesCount}</>,
-            thProps: { sx: { minWidth: '200px', width: '200px' } }
-          },
-          {
-            accessor: "actions",
-            header: () => <Typography fontSize="0.9rem" fontWeight={500} color={getShade(0, 0.6)} textAlign="center">Actions</Typography>,
-            cell: (row: Category, rowIndex: number, formik?: FormikProps<Category>, loading?: boolean) => (
-              <ActionCell
-                editState={editableRows[rowIndex]}
-                onEditHandler={() => { changeEditableRow(rowIndex, true) }}
-                onDeleteHandler={() => { console.log(`${row.name} CLicked Delete`) }}
-                onCancelEditHandler={() => {
-                  formik?.resetForm()
-                  if (addState && rowIndex === 0) {
-                    disableAddState();
-                  }
-                  else {
-                    changeEditableRow(rowIndex, false)
-                  }
-                }}
-                onSubmitHandler={() => formik?.submitForm()}
-                loading={loading}
-              />
-            ),
-            thProps: { sx: { width: '150px' } }
-          },
-        ]}
-        data={categories}
-        editableRows={editableRows}
-        changeEditableRows={changeEditableRow}
-        validationSchema={validationSchema}
-        onEditSubmit={onEditSubmit}
-        loading={loading}
-      />
-    </Box>
+          />
+          <Button
+            variant='contained'
+            color='primary'
+            size='small'
+            startIcon={<Add />}
+            disableElevation
+            disableRipple
+            onClick={() => handleAddClick(addState)}
+          >
+            Add
+          </Button>
+        </Stack>
+
+        <Table
+          columns={[
+            {
+              accessor: "name",
+              header: "Name",
+              cell: (row: Category) => <>{row.name}</>,
+              thProps: { sx: { minWidth: '200px', width: '200px' } },
+              editable: true
+            },
+            {
+              accessor: "description",
+              header: "Description",
+              cell: (row: Category) => <>{row.description}</>,
+              editable: true,
+              inputProps: {
+                multiline: true,
+                maxRows: 3
+              }
+            },
+            {
+              accessor: "numberOfRecipes",
+              header: "Number of Recipes",
+              cell: (row: Category) => <>{row.recipesCount}</>,
+              thProps: { sx: { minWidth: '200px', width: '200px' } }
+            },
+            {
+              accessor: "actions",
+              header: () => <Typography fontSize="0.9rem" fontWeight={500} color={getShade(0, 0.6)} textAlign="center">Actions</Typography>,
+              cell: (row: Category, rowIndex: number, formik?: FormikProps<Category>, loading?: boolean) => (
+                <ActionCell
+                  editState={editableRows[rowIndex]}
+                  onEditHandler={() => { changeEditableRow(rowIndex, true) }}
+                  onDeleteHandler={() => { console.log(`${row.name} CLicked Delete`) }}
+                  onCancelEditHandler={() => {
+                    formik?.resetForm()
+                    if (addState && rowIndex === 0) {
+                      disableAddState();
+                    }
+                    else {
+                      changeEditableRow(rowIndex, false)
+                    }
+                  }}
+                  onSubmitHandler={() => formik?.submitForm()}
+                  loading={loading}
+                />
+              ),
+              thProps: { sx: { width: '150px' } }
+            },
+          ]}
+          data={categories}
+          editableRows={editableRows}
+          changeEditableRows={changeEditableRow}
+          validationSchema={validationSchema}
+          onEditSubmit={onEditSubmit}
+          loading={loading}
+        />
+      </Box>
+    </Suspense>
   )
 }
 

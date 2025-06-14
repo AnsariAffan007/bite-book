@@ -4,7 +4,7 @@ import Table, { HeaderCell } from '@/components/Table'
 import { getShade } from '@/styles/shader'
 import { Add, EditOutlined, Search } from '@mui/icons-material'
 import { Box, Button, InputAdornment, OutlinedInput, Stack } from '@mui/material'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { Suspense, useCallback, useEffect, useState } from 'react'
 import ActionCell from '@/components/Table/ActionCell';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
@@ -91,110 +91,112 @@ const ProfileRecipes = () => {
 
   // #region JSX Start
   return (
-    <Box sx={{ backgroundColor: getShade(255, 0.2) }}>
-      <Stack direction="row" justifyContent="space-between" alignItems="center" p={{ xs: 1, md: 3 }}>
-        <OutlinedInput
-          size='small'
-          placeholder='Search by Name'
-          inputProps={{ type: 'search' }}
-          startAdornment={
-            <InputAdornment position='start'>
-              <Search sx={{ fontSize: '1rem' }} />
-            </InputAdornment>
-          }
-        // sx={{
-        //   '& input::-webkit-search-cancel-button': {
-        //     '-webkit-appearance': 'none',
-        //     backgroundImage: 'url("/images/cancel-button.png")',
-        //     backgroundSize: 'cover'
-        //   }
-        // }}
-        />
-        <Button
-          variant='contained'
-          color='primary'
-          size='small'
-          startIcon={<Add />}
-          disableElevation
-          disableRipple
-          onClick={handleAddClick}
-        >
-          Add
-        </Button>
-      </Stack>
+    <Suspense>
+      <Box sx={{ backgroundColor: getShade(255, 0.2) }}>
+        <Stack direction="row" justifyContent="space-between" alignItems="center" p={{ xs: 1, md: 3 }}>
+          <OutlinedInput
+            size='small'
+            placeholder='Search by Name'
+            inputProps={{ type: 'search' }}
+            startAdornment={
+              <InputAdornment position='start'>
+                <Search sx={{ fontSize: '1rem' }} />
+              </InputAdornment>
+            }
+          // sx={{
+          //   '& input::-webkit-search-cancel-button': {
+          //     '-webkit-appearance': 'none',
+          //     backgroundImage: 'url("/images/cancel-button.png")',
+          //     backgroundSize: 'cover'
+          //   }
+          // }}
+          />
+          <Button
+            variant='contained'
+            color='primary'
+            size='small'
+            startIcon={<Add />}
+            disableElevation
+            disableRipple
+            onClick={handleAddClick}
+          >
+            Add
+          </Button>
+        </Stack>
 
-      <Table
-        columns={[
-          {
-            accessor: "name",
-            header: "Name",
-            cell: (row: Recipe) => <>{row.name}</>
-          },
-          {
-            accessor: "category",
-            header: "Category",
-            cell: (row: Recipe) => <>{categories.find((c: any) => c.id === row.categoryId)?.name}</>
-          },
-          {
-            accessor: "mealTime",
-            header: "Meal Time",
-            cell: (row: Recipe) => <>{row.mealTime.join(', ')}</>
-          },
-          {
-            accessor: "prepTime",
-            header: "Prep Time",
-            cell: (row: Recipe) => <>{`${row.prepTime} Hour(s)`}</>
-          },
-          {
-            accessor: "difficultyLevel",
-            header: "Difficulty Level",
-            cell: (row: Recipe) => <>{row.difficulty}</>
-          },
-          {
-            accessor: "idealServings",
-            header: "Ideal Servings",
-            cell: (row: Recipe) => <>{row.idealServings}</>
-          },
-          {
-            accessor: "class",
-            header: "Class",
-            cell: (row: Recipe) => <>{row.class}</>
-          },
-          {
-            accessor: "steps",
-            header: () => <HeaderCell text='Steps' sx={{ textAlign: 'center' }} />,
-            cell: (row: Recipe) => (
-              <Box display="flex" justifyContent="center">
-                <Button
-                  variant='outlined'
-                  size='small'
-                  disableElevation
-                  disableRipple
-                  startIcon={row.stepsExist ? <EditOutlined /> : <Add />}
-                  onClick={() => router.push(`/profile/recipes/${row.id}/steps/`)}
-                >
-                  {row.stepsExist ? "Edit" : "Add"}
-                </Button>
-              </Box>
-            )
-          },
-          {
-            accessor: "actions",
-            header: () => <HeaderCell text='Actions' sx={{ textAlign: 'center' }} />,
-            cell: (row: Recipe) => (
-              <ActionCell
-                editState={false}
-                onEditHandler={() => handleEditClick(row.id)}
-                onDeleteHandler={() => handleDelete(row.id)}
-                loading={loading}
-              />
-            ),
-            thProps: { sx: { width: '150px' } }
-          },
-        ]}
-        data={recipes}
-      />
-    </Box>
+        <Table
+          columns={[
+            {
+              accessor: "name",
+              header: "Name",
+              cell: (row: Recipe) => <>{row.name}</>
+            },
+            {
+              accessor: "category",
+              header: "Category",
+              cell: (row: Recipe) => <>{categories.find((c: any) => c.id === row.categoryId)?.name}</>
+            },
+            {
+              accessor: "mealTime",
+              header: "Meal Time",
+              cell: (row: Recipe) => <>{row.mealTime.join(', ')}</>
+            },
+            {
+              accessor: "prepTime",
+              header: "Prep Time",
+              cell: (row: Recipe) => <>{`${row.prepTime} Hour(s)`}</>
+            },
+            {
+              accessor: "difficultyLevel",
+              header: "Difficulty Level",
+              cell: (row: Recipe) => <>{row.difficulty}</>
+            },
+            {
+              accessor: "idealServings",
+              header: "Ideal Servings",
+              cell: (row: Recipe) => <>{row.idealServings}</>
+            },
+            {
+              accessor: "class",
+              header: "Class",
+              cell: (row: Recipe) => <>{row.class}</>
+            },
+            {
+              accessor: "steps",
+              header: () => <HeaderCell text='Steps' sx={{ textAlign: 'center' }} />,
+              cell: (row: Recipe) => (
+                <Box display="flex" justifyContent="center">
+                  <Button
+                    variant='outlined'
+                    size='small'
+                    disableElevation
+                    disableRipple
+                    startIcon={row.stepsExist ? <EditOutlined /> : <Add />}
+                    onClick={() => router.push(`/profile/recipes/${row.id}/steps/`)}
+                  >
+                    {row.stepsExist ? "Edit" : "Add"}
+                  </Button>
+                </Box>
+              )
+            },
+            {
+              accessor: "actions",
+              header: () => <HeaderCell text='Actions' sx={{ textAlign: 'center' }} />,
+              cell: (row: Recipe) => (
+                <ActionCell
+                  editState={false}
+                  onEditHandler={() => handleEditClick(row.id)}
+                  onDeleteHandler={() => handleDelete(row.id)}
+                  loading={loading}
+                />
+              ),
+              thProps: { sx: { width: '150px' } }
+            },
+          ]}
+          data={recipes}
+        />
+      </Box>
+    </Suspense>
   )
 }
 

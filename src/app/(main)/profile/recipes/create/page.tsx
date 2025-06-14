@@ -1,9 +1,11 @@
 import RecipeInput from '@/views/RecipeInput'
-import React from 'react'
+import React, { Suspense } from 'react'
 
 const page = () => {
   return (
-    <RecipeInput />
+    <Suspense>
+      <RecipeInput />
+    </Suspense>
   )
 }
 

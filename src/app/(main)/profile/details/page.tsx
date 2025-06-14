@@ -6,7 +6,7 @@ import { Box, Button, Grid, InputLabel, Stack, Typography } from '@mui/material'
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { enqueueSnackbar } from 'notistack';
-import React, { useEffect, useState } from 'react'
+import React, { Suspense, useEffect, useState } from 'react'
 
 const Profile = () => {
 
@@ -28,79 +28,81 @@ const Profile = () => {
   }, [])
 
   return (
-    <Box sx={{ px: 3, py: 2, backgroundColor: getShade(255, 0.2) }}>
+    <Suspense>
+      <Box sx={{ px: 3, py: 2, backgroundColor: getShade(255, 0.2) }}>
 
-      <Grid container spacing={1}>
+        <Grid container spacing={1}>
 
-        <Grid item xs={12} md={6}>
-          <Stack spacing={1} py={1}>
-            <InputLabel sx={{ fontSize: '0.9rem' }}>Username</InputLabel>
-            <Typography variant='subtitle2'>{userDetails?.username}</Typography>
-          </Stack>
+          <Grid item xs={12} md={6}>
+            <Stack spacing={1} py={1}>
+              <InputLabel sx={{ fontSize: '0.9rem' }}>Username</InputLabel>
+              <Typography variant='subtitle2'>{userDetails?.username}</Typography>
+            </Stack>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Stack spacing={1} py={1}>
+              <InputLabel sx={{ fontSize: '0.9rem' }}>Email</InputLabel>
+              <Typography variant='subtitle2'>{userDetails?.email}</Typography>
+            </Stack>
+          </Grid>
+
+          <Grid item xs={12} md={6}>
+            <Stack spacing={1} py={1}>
+              <InputLabel sx={{ fontSize: '0.9rem' }}>Recipes Added</InputLabel>
+              <Typography variant='h5'>{userDetails?.recipeCount}</Typography>
+            </Stack>
+          </Grid>
+
+          <Grid item xs={12} md={6}>
+            <Stack spacing={1} py={1}>
+              <InputLabel sx={{ fontSize: '0.9rem' }}>Categories Added</InputLabel>
+              <Typography variant='h5'>{userDetails?.categoryCount}</Typography>
+            </Stack>
+          </Grid>
+
+          <Grid item xs={12} md={6}>
+            <Button
+              color='primary'
+              variant='outlined'
+              disableRipple
+              sx={{
+                borderRadius: '20px',
+                width: '100%',
+                bgcolor: getShade(255, 0.2),
+                '&:hover': {
+                  bgcolor: getShade(255, 0.4),
+                },
+              }}
+              disableElevation
+              startIcon={<Add />}
+            >
+              Add a Recipe
+            </Button>
+          </Grid>
+
+          <Grid item xs={12} md={6}>
+            <Button
+              color='primary'
+              variant='outlined'
+              disableRipple
+              sx={{
+                borderRadius: '20px',
+                width: '100%',
+                bgcolor: getShade(255, 0.2),
+                '&:hover': {
+                  bgcolor: getShade(255, 0.4),
+                },
+              }}
+              disableElevation
+              startIcon={<Add />}
+            >
+              Add a Category
+            </Button>
+          </Grid>
         </Grid>
-        <Grid item xs={12} md={6}>
-          <Stack spacing={1} py={1}>
-            <InputLabel sx={{ fontSize: '0.9rem' }}>Email</InputLabel>
-            <Typography variant='subtitle2'>{userDetails?.email}</Typography>
-          </Stack>
-        </Grid>
 
-        <Grid item xs={12} md={6}>
-          <Stack spacing={1} py={1}>
-            <InputLabel sx={{ fontSize: '0.9rem' }}>Recipes Added</InputLabel>
-            <Typography variant='h5'>{userDetails?.recipeCount}</Typography>
-          </Stack>
-        </Grid>
-
-        <Grid item xs={12} md={6}>
-          <Stack spacing={1} py={1}>
-            <InputLabel sx={{ fontSize: '0.9rem' }}>Categories Added</InputLabel>
-            <Typography variant='h5'>{userDetails?.categoryCount}</Typography>
-          </Stack>
-        </Grid>
-
-        <Grid item xs={12} md={6}>
-          <Button
-            color='primary'
-            variant='outlined'
-            disableRipple
-            sx={{
-              borderRadius: '20px',
-              width: '100%',
-              bgcolor: getShade(255, 0.2),
-              '&:hover': {
-                bgcolor: getShade(255, 0.4),
-              },
-            }}
-            disableElevation
-            startIcon={<Add />}
-          >
-            Add a Recipe
-          </Button>
-        </Grid>
-
-        <Grid item xs={12} md={6}>
-          <Button
-            color='primary'
-            variant='outlined'
-            disableRipple
-            sx={{
-              borderRadius: '20px',
-              width: '100%',
-              bgcolor: getShade(255, 0.2),
-              '&:hover': {
-                bgcolor: getShade(255, 0.4),
-              },
-            }}
-            disableElevation
-            startIcon={<Add />}
-          >
-            Add a Category
-          </Button>
-        </Grid>
-      </Grid>
-
-    </Box>
+      </Box>
+    </Suspense>
   )
 }
 
