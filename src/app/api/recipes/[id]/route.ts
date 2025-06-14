@@ -1,6 +1,8 @@
 import { db } from "@/db";
+import { categoriesTable } from "@/db/schemas/categories";
 import { ingredientsTable } from "@/db/schemas/ingredients";
 import { recipesTable } from "@/db/schemas/recipes";
+import { usersTable } from "@/db/schemas/users";
 import { authenticateSession } from "@/utils/sessions";
 import { eq } from "drizzle-orm";
 import { cookies } from "next/headers";
@@ -9,17 +11,13 @@ import { NextResponse } from "next/server";
 // #region GET
 export async function GET(_req: Request, { params }: { params: { id: string } }) {
   try {
-    const sessionId = cookies().get('session_id')?.value;
-    const { authenticated, expired, message }: any = await authenticateSession(sessionId)
-    if (authenticated && expired) {
-      return NextResponse.json({ message: message }, { status: 401 })
-    }
-
     const recipeId: any = params.id;
     const recipe = await db
       .select()
       .from(recipesTable)
       .where(eq(recipesTable.id, recipeId))
+      .leftJoin(categoriesTable, eq(recipesTable.categoryId, categoriesTable.id))
+      .leftJoin(usersTable, eq(recipesTable.userId, usersTable.id))
 
     const ingredients = await db
       .select()
