@@ -3,7 +3,7 @@
 import { theme } from '@/themes/theme'
 import { Menu } from '@mui/icons-material'
 import { Box, Breadcrumbs, IconButton, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React, { Suspense, useState } from 'react'
 import Sidebar from '../Sidebar/Sidebar'
 import Link from 'next/link'
 import { usePathname, useSearchParams } from 'next/navigation'
@@ -24,7 +24,7 @@ const Navbar = (props: any) => {
   const routes = pathname.split("/").filter(route => route.length !== 0)
 
   return (
-    <>
+    <Suspense>
       <Box
         sx={{
           backgroundColor: theme.palette.background.paper,
@@ -84,7 +84,7 @@ const Navbar = (props: any) => {
         open={drawer}
         toggleDrawer={setDrawer}
       />
-    </>
+    </Suspense>
   )
 }
 
