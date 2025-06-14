@@ -42,7 +42,7 @@ const useSave = (nodes: NodeType[], edges: Edge[], recipeId: string) => {
           edges: edgesTransformed.current
         }
       )
-      console.log(res)
+      enqueueSnackbar(res.data?.message, { variant: 'success' })
     }
     catch (e) {
       console.log("Error saving recipe: ", e)

@@ -94,19 +94,28 @@ export async function POST(req: Request, { params }: { params: { id: string } })
         .insert(stepIngredientsTable)
         .values(stepIngredients)
 
-      // Deleting all step connections of the recipe 
-      await tx.delete(stepConnectionsTable).where(eq(stepConnectionsTable.recipeId, recipeId))
-      // Adding new step connections
-      await tx
-        .insert(stepConnectionsTable)
-        .values(body.edges?.map((e: any) => ({
-          recipeId: Number(recipeId),
-          sourceStepId: e.sourceStepId,
-          targetStepId: e.targetStepId,
-          sourceHandle: e.sourceHandle,
-          targetHandle: e.targetHandle,
-        })))
+      if (body.edges?.length > 0) {
+        // IF edges are found in payload, update
 
+        // Deleting all step connections of the recipe 
+        await tx.delete(stepConnectionsTable).where(eq(stepConnectionsTable.recipeId, recipeId))
+        // Adding new step connections
+        await tx
+          .insert(stepConnectionsTable)
+          .values(body.edges?.map((e: any) => ({
+            recipeId: Number(recipeId),
+            sourceStepId: e.sourceStepId,
+            targetStepId: e.targetStepId,
+            sourceHandle: e.sourceHandle,
+            targetHandle: e.targetHandle,
+          })))
+      }
+      else {
+        // Otherwise, delete All
+        await tx
+          .delete(stepConnectionsTable)
+          .where(eq(stepConnectionsTable.recipeId, recipeId))
+      }
     })
 
     return NextResponse.json({ message: "Successfully saved recipe steps" }, { status: 200 })
