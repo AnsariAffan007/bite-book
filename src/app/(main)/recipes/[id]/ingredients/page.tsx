@@ -23,7 +23,7 @@ const Page = async ({ params }: any) => {
   const res = await getIngredients(params.id)
 
   return (
-    <Box my={4}>
+    <Box sx={{ my: 4, mx: 2 }}>
       <Grid container spacing={1}>
         {res?.data?.data?.map((ing: any, index: number) => (
           <Grid key={index} item xs={6} sm={4} md={3}>

@@ -71,12 +71,8 @@ const Layout = async ({ children, params }: any) => {
       </Box>
 
       <Box
-        // mt={-2}
-        p={2}
-        // bgcolor='white'
         sx={{
-          borderTopLeftRadius: '20px',
-          borderTopRightRadius: '20px',
+          border: '1px solid #ccc',
           position: 'relative',
         }}
       >

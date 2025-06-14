@@ -35,7 +35,10 @@ const RecipeDetailTabs = ({ recipeId }: any) => {
   }, [pathname])
 
   return (
-    <Box display="flex" justifyContent={{ xs: "center", sm: "flex-start" }} columnGap={2}>
+    <Box
+      sx={{ p: 2, pb: 0, display: 'flex', justifyContent: { xs: 'center', sm: 'flex-start' } }}
+      columnGap={2}
+    >
       <Link href={`/recipes/${recipeId}/details/`}>
         <Box sx={activeTab === TABS.DETAILS ? activeLinkStyle : linkStyle}>
           <Typography variant='subtitle1' fontSize={{ xs: '0.85rem', md: '1rem' }}>Details</Typography>

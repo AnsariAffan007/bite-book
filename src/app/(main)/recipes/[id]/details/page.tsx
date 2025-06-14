@@ -23,7 +23,7 @@ const Page = async ({ params }: any) => {
   const recipe = details?.data?.data
 
   return (
-    <Box my={4}>
+    <Box sx={{ my: 4, mx: 2 }}>
       <Stack spacing={1} mb={3}>
         <Box display="flex" alignItems="center" columnGap={2}>
           <Typography fontSize="0.9rem" sx={{ flexBasis: '10%' }} color="#666">Meal Time</Typography>
