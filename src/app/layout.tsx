@@ -2,7 +2,7 @@
 
 import Head from "next/head"
 import "@/styles/global.css"
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import AppContext from "@/contexts/AppContext";
 import { Box, ThemeProvider } from "@mui/material";
 import { theme } from "@/themes/theme";
@@ -46,7 +46,9 @@ const DefaultLayout = ({ children }: any) => {
                     minHeight: '100svh'
                   }}
                 >
-                  {children}
+                  <Suspense>
+                    {children}
+                  </Suspense>
                 </Box>
               </SnackbarProvider>
             </ThemeProvider>
