@@ -22,7 +22,7 @@ export interface Category {
 
 const ProfileCategories = () => {
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const [categories, setCategories] = useState<Category[]>([]);
   const [message, setMessage] = useState('');

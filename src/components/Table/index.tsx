@@ -20,7 +20,7 @@ export const DataCell = ({ text, sx }: { text: string, sx?: SxProps }) => {
 }
 
 const Table: React.FC<TableProps> = ({ columns, data, editableRows, validationSchema, onEditSubmit, loading, noDataMessage }) => {
-  return data?.length <= 0 ? <NoRecipe message={noDataMessage} /> : (
+  return !loading && data?.length <= 0 ? <NoRecipe message={noDataMessage} /> : (
     <TableContainer>
       <MuiTable>
 
