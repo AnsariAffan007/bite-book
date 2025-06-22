@@ -8,6 +8,7 @@ import React, { useRef, useState } from "react";
 import { getShade } from "@/styles/shader";
 import RecipeCard from "@/components/Recipe/RecipeCard";
 import { KeyboardArrowDownRounded, LunchDiningRounded, Menu } from "@mui/icons-material";
+import NoRecipe from "@/components/NoRecipe";
 
 const Home: React.FC = () => {
 
@@ -67,7 +68,7 @@ const Home: React.FC = () => {
           toggleDrawer={setDrawer}
         />
         <Box>
-          <Typography variant="h2" fontWeight={500} color="primary.contrastText">
+          <Typography variant="h2" fontWeight={500} color="primary.contrastText" sx={{ textAlign: 'center' }}>
             Explore and Share Recipes
           </Typography>
           <Box mt={4} display="flex" columnGap={2} justifyContent="center">
@@ -104,53 +105,28 @@ const Home: React.FC = () => {
 
       <Box ref={trendingContainerRef} paddingBlock="40px" marginInline="24px">
         <Box textAlign="center">
-          <Typography variant="h5" color="primary" fontWeight={600}>Trending</Typography>
-          <Divider sx={{ mt: 1, borderColor: theme.palette.primary.main, opacity: 0.25 }} />
+          <Typography variant="h4" fontWeight={500}>Trending</Typography>
+          <Divider sx={{ mt: 1 }} />
         </Box>
         <Box mt={4}>
-          <Grid container spacing={2}>
-            <Grid item xs={6} sm={4}>
-              <Link href={`/recipes/1/details`} style={{ textDecoration: "none" }}>
-                <RecipeCard
-                  recipeName={"Chicken"}
-                  userName={"Affan Ansari"}
-                  description={mockDesc}
-                  categories={mockCategories}
-                />
-              </Link>
+          {true ? (
+            <Grid container spacing={3}>
+              {Array(6).fill("").map((_, i) => (
+                <Grid key={i} item xs={12} sm={6} md={4} lg={3}>
+                  <Link href={`/recipes/1/details`} style={{ textDecoration: "none" }}>
+                    <RecipeCard
+                      recipeName={"Chicken"}
+                      userName={"Affan Ansari"}
+                      description={mockDesc}
+                      categories={mockCategories}
+                    />
+                  </Link>
+                </Grid>
+              ))}
             </Grid>
-            <Grid item xs={6} sm={4}>
-              <Link href={`/recipes/1/details`} style={{ textDecoration: "none" }}>
-                <RecipeCard
-                  recipeName={"Chicken"}
-                  userName={"Affan Ansari"}
-                  description={mockDesc}
-                  categories={mockCategories}
-                />
-              </Link>
-            </Grid>
-            <Grid item xs={6} sm={4}>
-              <Link href={`/recipes/1/details`} style={{ textDecoration: "none" }}>
-                <RecipeCard
-                  recipeName={"Chicken"}
-                  userName={"Affan Ansari"}
-                  description={mockDesc}
-                  categories={mockCategories}
-                />
-              </Link>
-            </Grid>
-            <Grid item xs={6} sm={4}>
-              <Link href={`/recipes/1/details`} style={{ textDecoration: "none" }}>
-                <RecipeCard
-                  recipeName={"Chicken"}
-                  userName={"Affan Ansari"}
-                  description={mockDesc}
-                  categories={mockCategories}
-                />
-              </Link>
-            </Grid>
-
-          </Grid>
+          ) : (
+            <NoRecipe />
+          )}
         </Box>
       </Box>
     </>

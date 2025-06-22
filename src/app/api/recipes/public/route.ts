@@ -24,7 +24,13 @@ export async function GET() {
       .leftJoin(usersTable, eq(recipesTable.userId, usersTable.id))
       .leftJoin(categoriesTable, eq(recipesTable.categoryId, categoriesTable.id))
 
-    return NextResponse.json({ message: "Successfully retrieved recipes", data: [...recipes] }, { status: 200 })
+    return NextResponse.json({
+      message: recipes?.length > 0
+        ? "Successfully retrieved recipes" : "No Recipes found",
+      data: [...recipes]
+    },
+      { status: 200 }
+    )
   }
   catch (e) {
     return NextResponse.json({ message: "Could not retrieve recipes! Please contact admin", error: e }, { status: 500 })

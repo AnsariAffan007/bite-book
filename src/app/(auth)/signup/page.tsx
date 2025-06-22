@@ -166,6 +166,7 @@ const SignUp = () => {
                   size="small"
                   error={Boolean(formik.errors.confirmPassword)}
                   type="password"
+                  inputProps={{ autocomplete: 'off' }}
                 />
               </Stack>
             </Box>
