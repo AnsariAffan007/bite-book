@@ -31,7 +31,12 @@ export async function GET(req: Request) {
         : await query;
     }
 
-    return NextResponse.json({ message: "Successfully retrieved categories", data: [...categoriesToReturn] }, { status: 200 })
+    return NextResponse.json({
+      message: categoriesToReturn?.length > 0
+        ? "Successfully retrieved categories"
+        : "You have not added any categories yet",
+      data: [...categoriesToReturn]
+    }, { status: 200 })
   }
   catch (e) {
     return NextResponse.json({ message: "Could not retrieve categories! Please contact admin", error: e }, { status: 500 })

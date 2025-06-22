@@ -5,6 +5,7 @@ import { TableContainer, Table as MuiTable, TableHead, TableRow, TableCell, Tabl
 import React from 'react'
 import { Column, TableProps } from './types';
 import { Formik, FormikProps } from 'formik';
+import NoRecipe from '../NoRecipe';
 
 export const HeaderCell = ({ text, sx }: { text: string, sx?: SxProps }) => {
   return (
@@ -18,15 +19,15 @@ export const DataCell = ({ text, sx }: { text: string, sx?: SxProps }) => {
   )
 }
 
-const Table: React.FC<TableProps> = ({ columns, data, editableRows, validationSchema, onEditSubmit, loading }) => {
-  return (
+const Table: React.FC<TableProps> = ({ columns, data, editableRows, validationSchema, onEditSubmit, loading, noDataMessage }) => {
+  return data?.length <= 0 ? <NoRecipe message={noDataMessage} /> : (
     <TableContainer>
       <MuiTable>
 
         <TableHead sx={{ backgroundColor: getShade(0, 0.02) }}>
           <TableRow>
             {columns.map((col: Column, index: number) => (
-              <TableCell key={index} {...col.thProps} sx={{ '&:first-child': { pl: 3 }, '&:last-child': { pr: 3 } }}>
+              <TableCell key={index} {...col.thProps} sx={{ '&:first-of-type': { pl: 3 }, '&:last-of-type': { pr: 3 } }}>
                 {typeof col.header === 'string'
                   ? <HeaderCell text={col.header} />
                   : col.header?.()
@@ -51,7 +52,7 @@ const Table: React.FC<TableProps> = ({ columns, data, editableRows, validationSc
                     return (
                       <TableRow key={index}>
                         {columns.map((col: Column, i: number) => (
-                          <TableCell key={i} sx={{ '&:first-child': { pl: 3 }, '&:last-child': { pr: 3 } }}>
+                          <TableCell key={i} sx={{ '&:first-of-type': { pl: 3 }, '&:last-of-type': { pr: 3 } }}>
                             {Boolean(col.editable && Boolean(editableRows?.[index]))
                               ? (
                                 <Box sx={{ width: '100%', position: 'relative' }}>

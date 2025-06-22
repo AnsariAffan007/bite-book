@@ -21,5 +21,6 @@ export interface TableProps {
   changeEditableRows?: (index: number, value: boolean) => void,
   validationSchema?: Yup.ObjectSchema<any>,
   onEditSubmit?: (row: any, index: number, values: any) => void,
-  loading?: boolean
+  loading?: boolean,
+  noDataMessage?: string,
 }

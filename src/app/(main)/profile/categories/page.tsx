@@ -25,6 +25,7 @@ const ProfileCategories = () => {
   const [loading, setLoading] = useState(false);
 
   const [categories, setCategories] = useState<Category[]>([]);
+  const [message, setMessage] = useState('');
   // #region FETCHER
   const fetchCategories = useCallback(async (
     search: string,
@@ -33,12 +34,14 @@ const ProfileCategories = () => {
     try {
       const res = await axios.get(`/api/categories?search=${search}`);
       setCategories(res?.data?.data)
+      setMessage(res?.data?.message)
     }
     catch (e) {
       enqueueSnackbar(
         e?.respones?.data?.message || "Could not fetch categories. Please contact admin",
         { variant: 'success' }
       )
+      setMessage(e?.respones?.data?.message)
       console.log("Error fetcing categories: ", e)
     }
     setAddState(false)
@@ -197,6 +200,7 @@ const ProfileCategories = () => {
           validationSchema={validationSchema}
           onEditSubmit={onEditSubmit}
           loading={loading}
+          noDataMessage={message}
         />
       </Box>
     </Suspense>

@@ -6,6 +6,7 @@ import { Box, Button, InputAdornment, InputLabel, OutlinedInput, Stack, Typograp
 import axios from "axios";
 import { FormikProps, FormikValues, useFormik } from "formik";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { enqueueSnackbar } from "notistack";
 import { useState } from "react";
 import * as Yup from 'yup';
@@ -27,6 +28,8 @@ const Login = () => {
 
   const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const router = useRouter()
 
   const validationSchema = Yup.object({
     username: Yup.string()
@@ -54,14 +57,15 @@ const Login = () => {
       try {
         const res = await axios.post('/api/auth/login', payload)
         enqueueSnackbar(res.data.message, { variant: 'success' })
-        window.location.pathname = '/'
+        router.push('/')
       }
       catch (e) {
         console.log("Error logging in!: ", e)
         enqueueSnackbar(e?.response?.data?.message || "Something went wrong", { variant: 'error' })
       }
       setLoading(false);
-    }
+    },
+    validateOnChange: false
   })
 
   return (

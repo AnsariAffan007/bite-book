@@ -2,7 +2,7 @@
 
 import { getShade } from '@/styles/shader';
 import { Add } from '@mui/icons-material';
-import { Box, Button, Grid, InputLabel, Stack, Typography } from '@mui/material';
+import { Box, Button, Grid, InputLabel, Skeleton, Stack, Typography } from '@mui/material';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { enqueueSnackbar } from 'notistack';
@@ -12,8 +12,10 @@ const Profile = () => {
 
   const router = useRouter();
   const [userDetails, setUserDetails] = useState<any>({});
+  const [loading, setLoading] = useState(true)
   useEffect(() => {
     async function fetchData() {
+      setLoading(true)
       try {
         const res = await axios.get('/api/user/details');
         setUserDetails(res.data)
@@ -23,6 +25,7 @@ const Profile = () => {
         enqueueSnackbar(e.response?.data?.message || 'Could not fetch your data', { variant: 'error' })
         if (e.response?.status === 401) router.push('/login')
       }
+      setLoading(false)
     }
     fetchData()
   }, [])
@@ -36,27 +39,43 @@ const Profile = () => {
           <Grid item xs={12} md={6}>
             <Stack spacing={1} py={1}>
               <InputLabel sx={{ fontSize: '0.9rem' }}>Username</InputLabel>
-              <Typography variant='subtitle2'>{userDetails?.username}</Typography>
+              <Typography variant='subtitle2'>
+                {loading ? <Skeleton variant='text' sx={{ width: '40px' }} /> : (
+                  <>{userDetails?.username}</>
+                )}
+              </Typography>
             </Stack>
           </Grid>
           <Grid item xs={12} md={6}>
             <Stack spacing={1} py={1}>
               <InputLabel sx={{ fontSize: '0.9rem' }}>Email</InputLabel>
-              <Typography variant='subtitle2'>{userDetails?.email}</Typography>
+              <Typography variant='subtitle2'>
+                {loading ? <Skeleton variant='text' sx={{ width: '120px' }} /> : (
+                  <>{userDetails?.email}</>
+                )}
+              </Typography>
             </Stack>
           </Grid>
 
           <Grid item xs={12} md={6}>
             <Stack spacing={1} py={1}>
               <InputLabel sx={{ fontSize: '0.9rem' }}>Recipes Added</InputLabel>
-              <Typography variant='h5'>{userDetails?.recipeCount}</Typography>
+              <Typography variant='h5'>
+                {loading ? <Skeleton variant='text' sx={{ width: '30px' }} /> : (
+                  <>{userDetails?.recipeCount}</>
+                )}
+              </Typography>
             </Stack>
           </Grid>
 
           <Grid item xs={12} md={6}>
             <Stack spacing={1} py={1}>
               <InputLabel sx={{ fontSize: '0.9rem' }}>Categories Added</InputLabel>
-              <Typography variant='h5'>{userDetails?.categoryCount}</Typography>
+              <Typography variant='h5'>
+                {loading ? <Skeleton variant='text' sx={{ width: '30px' }} /> : (
+                  <>{userDetails?.categoryCount}</>
+                )}
+              </Typography>
             </Stack>
           </Grid>
 
