@@ -119,6 +119,25 @@ const ProfileCategories = () => {
     }
   }, [addState, changeEditableRow, setCategories])
 
+  // #region Delete
+  const deleteRow = useCallback(async (row: any) => {
+    setLoading(true)
+    try {
+      await axios.delete(`/api/categories/${row.id}`)
+      enqueueSnackbar('Category deleted successfully', { variant: 'success' })
+      return fetchCategories('')
+    }
+    catch (e) {
+      console.log("Error deleting category: ", e)
+      enqueueSnackbar(
+        e?.response?.data?.message || "Category operation failed",
+        { variant: 'error' }
+      )
+      setLoading(false)
+    }
+  }, [])
+
+  // #region JSX
   return (
     <Suspense>
       <Box sx={{ backgroundColor: getShade(255, 0.2) }}>
@@ -177,7 +196,7 @@ const ProfileCategories = () => {
                 <ActionCell
                   editState={editableRows[rowIndex]}
                   onEditHandler={() => { changeEditableRow(rowIndex, true) }}
-                  onDeleteHandler={() => { console.log(`${row.name} CLicked Delete`) }}
+                  onDeleteHandler={() => { deleteRow(row) }}
                   onCancelEditHandler={() => {
                     formik?.resetForm()
                     if (addState && rowIndex === 0) {

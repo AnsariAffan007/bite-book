@@ -93,7 +93,7 @@ const Table: React.FC<TableProps> = ({ columns, data, editableRows, validationSc
               : (
                 <TableRow key={index}>
                   {columns.map((col: Column, i: number) => (
-                    <TableCell key={i} sx={{ '&:first-child': { pl: 3 }, '&:last-child': { pr: 3 } }}>
+                    <TableCell key={i} sx={{ '&:first-of-type': { pl: 3 }, '&:last-of-type': { pr: 3 } }}>
                       {Boolean(col.cell)
                         ? col?.cell?.(row, index, undefined, loading)
                         : <DataCell text={row[col.accessor]} />

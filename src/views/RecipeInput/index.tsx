@@ -99,6 +99,7 @@ const RecipeInput = () => {
         res?.data?.message || "Recipe successfully created",
         { variant: 'success' }
       )
+      router.push('/profile/recipes/')
     }
     catch (e) {
       console.log("Error submitting recipe: ", e)

@@ -12,7 +12,7 @@ export async function GET(req: Request) {
   const sessionId = cookies().get('session_id')?.value;
   const { authenticated, expired, message, userId }: any = await authenticateSession(sessionId)
 
-  if (authenticated && expired) {
+  if (expired) {
     return NextResponse.json({ message: message }, { status: 401 })
   }
 

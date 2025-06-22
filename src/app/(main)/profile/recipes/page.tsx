@@ -26,7 +26,7 @@ const ProfileRecipes = () => {
 
   const router = useRouter();
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const [recipes, setRecipes] = useState<any>([])
   // #region FETCHER
@@ -157,11 +157,6 @@ const ProfileRecipes = () => {
               cell: (row: Recipe) => <>{row.idealServings}</>
             },
             {
-              accessor: "class",
-              header: "Class",
-              cell: (row: Recipe) => <>{row.class}</>
-            },
-            {
               accessor: "steps",
               header: () => <HeaderCell text='Steps' sx={{ textAlign: 'center' }} />,
               cell: (row: Recipe) => (
@@ -194,6 +189,7 @@ const ProfileRecipes = () => {
             },
           ]}
           data={recipes}
+          loading={loading}
         />
       </Box>
     </Suspense>
