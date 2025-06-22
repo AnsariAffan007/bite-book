@@ -10,7 +10,7 @@ import RecipeCard from "@/components/Recipe/RecipeCard";
 import { KeyboardArrowDownRounded, LunchDiningRounded, Menu } from "@mui/icons-material";
 import NoRecipe from "@/components/NoRecipe";
 
-const Home: React.FC = () => {
+const Home: React.FC<any> = ({ success, message, response }) => {
 
   const [drawer, setDrawer] = useState(false)
 
@@ -109,7 +109,7 @@ const Home: React.FC = () => {
           <Divider sx={{ mt: 1 }} />
         </Box>
         <Box mt={4}>
-          {true ? (
+          {success && response?.data?.length > 0 ? (
             <Grid container spacing={3}>
               {Array(6).fill("").map((_, i) => (
                 <Grid key={i} item xs={12} sm={6} md={4} lg={3}>
@@ -125,7 +125,9 @@ const Home: React.FC = () => {
               ))}
             </Grid>
           ) : (
-            <NoRecipe />
+            <NoRecipe
+              message={message}
+            />
           )}
         </Box>
       </Box>
