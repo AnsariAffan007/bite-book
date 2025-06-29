@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { AppBar, Box, Button, Divider, Grid, IconButton, Toolbar, Typography } from "@mui/material";
 import { theme } from "@/themes/theme";
