@@ -16,13 +16,10 @@ const Home: React.FC<any> = ({ success, message, response }) => {
 
   const trendingContainerRef = useRef<any>(null);
 
-  const mockDesc = "This impressive paella is a perfect party dish and a fun meal to cook together with your guests.Add 1 cup of frozen peas along with the mussels, if you like.This impressive paella is a perfect party dish and a fun meal to cook together with your guests.Add 1 cup of frozen peas along with the mussels, if you like.This impressive paella is a perfect party dish and a fun meal to cook together with your guests.Add 1 cup of frozen peas along with the mussels, if you like.This impressive paella is a perfect party dish and a fun meal to cook together with your guests.Add 1 cup of frozen peas along with the mussels, if you like.This impressive paella is a perfect party dish and a fun meal to cook together with your guests.Add 1 cup of frozen peas along with the mussels, if you like."
-  const mockCategories = ["Desert", "Ice-cream", "Waffle"]
-
   return (
     <>
-      <Box
-        sx={{
+      <div
+        style={{
           height: "100svh",
           background: `linear-gradient(${getShade(0, 0.4)}, ${getShade(0, 0.4)}), url('/images/lander.png')`,
           backgroundPosition: "center",
@@ -101,7 +98,7 @@ const Home: React.FC<any> = ({ success, message, response }) => {
             <KeyboardArrowDownRounded />
           </IconButton>
         </Box>
-      </Box>
+      </div>
 
       <Box ref={trendingContainerRef} paddingBlock="40px" marginInline="24px">
         <Box textAlign="center">
@@ -111,14 +108,14 @@ const Home: React.FC<any> = ({ success, message, response }) => {
         <Box mt={4}>
           {success && response?.data?.length > 0 ? (
             <Grid container spacing={3}>
-              {Array(6).fill("").map((_, i) => (
+              {response?.data?.map((r: any, i: number) => (
                 <Grid key={i} item xs={12} sm={6} md={4} lg={3}>
-                  <Link href={`/recipes/1/details`} style={{ textDecoration: "none" }}>
+                  <Link href={`/recipes/${r.id}/details`} style={{ textDecoration: "none" }}>
                     <RecipeCard
-                      recipeName={"Chicken"}
-                      userName={"Affan Ansari"}
-                      description={mockDesc}
-                      categories={mockCategories}
+                      recipeName={r.name}
+                      userName={r.userName}
+                      description={r.description}
+                      categoryName={r.categoryName}
                     />
                   </Link>
                 </Grid>

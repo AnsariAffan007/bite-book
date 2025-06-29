@@ -4,7 +4,7 @@ import Head from "next/head"
 import "@/styles/global.css"
 import { Suspense, useState } from "react";
 import AppContext from "@/contexts/AppContext";
-import { Box, ThemeProvider } from "@mui/material";
+import { ThemeProvider } from "@mui/material";
 import { theme } from "@/themes/theme";
 import { Lato } from 'next/font/google'
 import { SnackbarProvider } from "notistack";
@@ -40,7 +40,7 @@ const DefaultLayout = ({ children }: any) => {
                 autoHideDuration={3000}
                 maxSnack={2}
               >
-                <Box
+                <div
                   style={{
                     backgroundColor: theme.palette.background.default,
                     minHeight: '100svh'
@@ -49,7 +49,7 @@ const DefaultLayout = ({ children }: any) => {
                   <Suspense>
                     {children}
                   </Suspense>
-                </Box>
+                </div>
               </SnackbarProvider>
             </ThemeProvider>
           </AppContext.Provider>
