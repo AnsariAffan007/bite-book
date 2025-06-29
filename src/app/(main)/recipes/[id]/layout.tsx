@@ -50,7 +50,7 @@ const Layout = async ({ children, params }: any) => {
             </Typography>
           </Box>
           <Stack my={1}>
-            <Typography fontSize="1.8rem" color="#fff">Sandwich</Typography>
+            <Typography fontSize="1.8rem" color="#fff">{recipe?.recipes?.name}</Typography>
             <Typography fontSize="0.95rem" color="#ddd">By {recipe?.users?.username}</Typography>
           </Stack>
           <Box display="flex" alignItems="center" columnGap={2}>
