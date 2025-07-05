@@ -1,7 +1,12 @@
 "use client";
 
-import { Box, Button, InputLabel, OutlinedInput, Stack, Typography } from "@mui/material";
+import { RemoveRedEyeOutlined, VisibilityOffOutlined } from "@mui/icons-material";
+import { Box, Button, InputAdornment, InputLabel, OutlinedInput, Stack, Typography } from "@mui/material";
+import axios from "axios";
 import { FormikProps, FormikValues, useFormik } from "formik";
+import { useRouter, useSearchParams } from "next/navigation";
+import { enqueueSnackbar } from "notistack";
+import { useEffect, useState } from "react";
 import * as Yup from 'yup';
 
 interface FormValues {
@@ -12,6 +17,9 @@ interface FormValues {
 const errorColor = '#D2665A'
 
 const ResetPassword = () => {
+
+  const [loading, setLoading] = useState(false)
+  const [showPass, setShowPass] = useState(false);
 
   const validationSchema = Yup.object({
     password: Yup.string()
@@ -28,14 +36,32 @@ const ResetPassword = () => {
       .required('Please confirm your password')
   });
 
+  const params = useSearchParams();
+  const token = params.get('token')
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!token) router.back()
+  }, [token])
+
   const formik: FormikProps<FormValues> = useFormik<FormValues>({
     initialValues: {
       password: "",
       confirmPassword: ""
     },
     validationSchema: validationSchema,
-    onSubmit: (values: FormikValues) => {
-      console.log(values);
+    onSubmit: async (values: FormikValues) => {
+      setLoading(true)
+      try {
+        const res = await axios.post('/api/auth/reset-password', { ...values, token: token })
+        enqueueSnackbar(res?.data?.message || 'Success! Please login again', { variant: 'success' })
+        router.push('/login/')
+      }
+      catch (e) {
+        console.log("Error in forgot password post: ", e)
+        enqueueSnackbar(e?.response?.data?.message || 'Error sending reset password link!', { variant: 'error' })
+      }
+      setLoading(false)
     }
   })
 
@@ -62,6 +88,28 @@ const ResetPassword = () => {
                   onChange={formik.handleChange}
                   size="small"
                   error={Boolean(formik.errors.password)}
+                  type={showPass ? 'text' : 'password'}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <Button
+                        size="small"
+                        disableElevation
+                        disableRipple
+                        onClick={() => setShowPass(prev => !prev)}
+                      >
+                        {showPass
+                          ? <VisibilityOffOutlined />
+                          : <RemoveRedEyeOutlined />
+                        }
+                      </Button>
+                    </InputAdornment>
+                  }
+                  sx={{
+                    '&.MuiInputBase-root': {
+                      pr: 0
+                    }
+                  }}
+                  inputProps={{ autocomplete: 'off' }}
                 />
               </Stack>
             </Box>
@@ -77,6 +125,8 @@ const ResetPassword = () => {
                   onChange={formik.handleChange}
                   size="small"
                   error={Boolean(formik.errors.confirmPassword)}
+                  type="password"
+                  inputProps={{ autocomplete: 'off' }}
                 />
               </Stack>
             </Box>
@@ -89,6 +139,7 @@ const ResetPassword = () => {
               sx={{ borderRadius: 1, width: '100%' }}
               disableElevation
               type="submit"
+              disabled={loading}
             >
               Confirm
             </Button>
