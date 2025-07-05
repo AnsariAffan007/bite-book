@@ -35,6 +35,11 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "Link has already been sent" }, { status: 409 })
     }
 
+    // Delete existing token if any
+    if (resetPassToken.length > 0 && resetPassToken[0].expiresAt < new Date()) {
+      await db.delete(resetPassTokensTable).where(eq(resetPassTokensTable.userId, user[0].id))
+    }
+
     // Token generation
     const token = crypto.randomBytes(32).toString('hex');
     const hashedToken = await bcrypt.hash(token, 6)
