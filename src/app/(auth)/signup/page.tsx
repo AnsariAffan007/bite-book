@@ -150,6 +150,7 @@ const SignUp = () => {
                       pr: 0
                     }
                   }}
+                  inputProps={{ autocomplete: 'off' }}
                 />
               </Stack>
             </Box>

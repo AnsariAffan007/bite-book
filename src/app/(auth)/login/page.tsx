@@ -131,6 +131,7 @@ const Login = () => {
                       pr: 0
                     }
                   }}
+                  inputProps={{ autocomplete: 'off' }}
                 />
                 <Typography variant="subtitle2" textAlign="right">
                   <Link href="/forgot-password" style={linkStyles}>Forgot password?</Link>
