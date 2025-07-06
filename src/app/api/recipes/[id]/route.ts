@@ -48,6 +48,7 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
     await db
       .update(recipesTable)
       .set({
+        image: body?.imageUrl,
         name: body?.name,
         categoryId: body?.category,
         description: body?.description,

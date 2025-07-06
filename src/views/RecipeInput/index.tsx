@@ -64,14 +64,14 @@ const RecipeInput = () => {
       const res = await axios.get(`/api/recipes/${recipeId}`);
       if (res?.data?.data) {
         setInitialValues({
-          imageUrl: res?.data?.data?.imageUrl,
-          name: res?.data?.data?.name,
-          category: categories?.find((c: any) => c.id === res?.data?.data?.categoryId) || null,
-          description: res?.data?.data?.description || '',
-          preptime: res?.data?.data?.prepTime || '',
-          difficulty: res?.data?.data?.difficulty || null,
-          mealtime: res?.data?.data?.mealTime || [],
-          servings: res?.data?.data?.idealServings || ''
+          imageUrl: res?.data?.data?.recipes?.imageUrl,
+          name: res?.data?.data?.recipes?.name,
+          category: res?.data?.data?.categories || null,
+          description: res?.data?.data?.recipes?.description || '',
+          preptime: res?.data?.data?.recipes?.prepTime || '',
+          difficulty: res?.data?.data?.recipes?.difficulty || null,
+          mealtime: res?.data?.data?.recipes?.mealTime || [],
+          servings: res?.data?.data?.recipes?.idealServings || ''
         })
         setIngredients(res?.data?.data?.ingredients || [])
       }
@@ -240,7 +240,7 @@ const RecipeInput = () => {
                       variant='outlined'
                       disableElevation
                       disableRipple
-                      startIcon={<UploadOutlined />}
+                      startIcon={!formik.values.imageUrl && <UploadOutlined />}
                     >
                       {!formik.values.imageUrl && 'Upload image'}
                       {!formik.values.imageUrl && (

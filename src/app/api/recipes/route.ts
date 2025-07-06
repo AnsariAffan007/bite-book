@@ -51,6 +51,7 @@ export async function POST(req: Request) {
       const recipeInsertResult = await tx
         .insert(recipesTable)
         .values({
+          image: body?.imageUrl,
           name: body?.name,
           userId: userId,
           categoryId: body?.category,
