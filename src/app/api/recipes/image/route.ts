@@ -50,3 +50,24 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: 'Could not upload file. Please try again or contact admin' }, { status: 500 })
   }
 }
+
+export async function DELETE(req: Request) {
+  try {
+    const sessionId = cookies().get('session_id')?.value;
+    const { authenticated, expired, message } = await authenticateSession(sessionId)
+
+    if (authenticated && expired) {
+      return NextResponse.json({ message: message }, { status: 401 })
+    }
+
+    const body = await req.json()
+
+    await cloudinary.uploader.destroy(body.public_id, { invalidate: true })
+
+    return new Response(null, { status: 204 })
+  }
+  catch (e) {
+    console.log("Error Deleting file: ", e)
+    return NextResponse.json({ message: 'Could not delete image. Please try again or contact admin' }, { status: 500 })
+  }
+}

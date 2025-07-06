@@ -3,8 +3,8 @@
 import FormikInput from '@/components/FormikInput';
 import { DIFFICULTY_LEVELS, MEAL_TIMES } from '@/data/RecipeFields';
 import { getShade } from '@/styles/shader';
-import { AddOutlined, UploadOutlined } from '@mui/icons-material';
-import { Autocomplete, Box, Button, Grid, InputLabel, OutlinedInput, Stack, TextField, Typography } from '@mui/material';
+import { AddOutlined, DeleteOutlined, UploadOutlined } from '@mui/icons-material';
+import { Autocomplete, Box, Button, Grid, IconButton, InputLabel, OutlinedInput, Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import { Formik, FormikProps } from 'formik';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
@@ -64,7 +64,7 @@ const RecipeInput = () => {
       const res = await axios.get(`/api/recipes/${recipeId}`);
       if (res?.data?.data) {
         setInitialValues({
-          imageUrl: res?.data?.data?.recipes?.imageUrl,
+          imageUrl: res?.data?.data?.recipes?.image,
           name: res?.data?.data?.recipes?.name,
           category: res?.data?.data?.categories || null,
           description: res?.data?.data?.recipes?.description || '',
@@ -98,6 +98,10 @@ const RecipeInput = () => {
     catch (e) {
       console.log('Error uploading image!')
     }
+  }, [])
+
+  const handleImageDelete = useCallback(async () => {
+
   }, [])
 
   // #region Submission
@@ -223,7 +227,7 @@ const RecipeInput = () => {
 
               <Grid container spacing={3}>
                 <Grid item xs={12} md={6}>
-                  <Stack spacing={1} height="100%">
+                  <Stack spacing={1} sx={{ height: '100%', position: 'relative' }}>
                     <InputLabel>Recipe Image</InputLabel>
                     <Button
                       color='inherit'
@@ -259,6 +263,23 @@ const RecipeInput = () => {
                         />
                       )}
                     </Button>
+                    {formik.values.imageUrl && (
+                      <IconButton
+                        sx={{
+                          position: 'absolute',
+                          left: '50%',
+                          translate: '-50% 50%',
+                          bottom: 0,
+                          backgroundColor: '#eee',
+                          '&:hover': { backgroundColor: '#ddd' },
+                          border: '1px solid #aaa'
+                        }}
+                        color='error'
+                        onClick={handleImageDelete}
+                      >
+                        <DeleteOutlined sx={{ fontSize: '1rem' }} />
+                      </IconButton>
+                    )}
                   </Stack>
                 </Grid>
                 <Grid item xs={12} md={6}>
