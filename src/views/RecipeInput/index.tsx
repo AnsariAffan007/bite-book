@@ -7,7 +7,7 @@ import { AddOutlined, UploadOutlined } from '@mui/icons-material';
 import { Autocomplete, Box, Button, Grid, InputLabel, OutlinedInput, Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import { Formik, FormikProps } from 'formik';
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import validationSchema from './validation';
 import { enqueueSnackbar } from 'notistack';
 import { usePathname, useRouter } from 'next/navigation';
@@ -38,6 +38,7 @@ const RecipeInput = () => {
   }, [])
 
   const [initialValues, setInitialValues] = useState({
+    imageUrl: "",
     name: "",
     category: null,
     description: "",
@@ -46,6 +47,8 @@ const RecipeInput = () => {
     mealtime: null,
     servings: ''
   })
+
+  const formikRef = useRef<FormikProps<any>>(null)
 
   // #region Fetching
   const pathname = usePathname();
@@ -61,6 +64,7 @@ const RecipeInput = () => {
       const res = await axios.get(`/api/recipes/${recipeId}`);
       if (res?.data?.data) {
         setInitialValues({
+          imageUrl: res?.data?.data?.imageUrl,
           name: res?.data?.data?.name,
           category: categories?.find((c: any) => c.id === res?.data?.data?.categoryId) || null,
           description: res?.data?.data?.description || '',
@@ -81,6 +85,20 @@ const RecipeInput = () => {
     if (recipeId === 'create') return;
     fetchRecipe()
   }, [recipeId, categories])
+
+  // #region Image handling
+  const handleFileChange = useCallback(async (e: any) => {
+    const file = e.target.files[0]
+    const formData = new FormData();
+    formData.append('file', file);
+    try {
+      const res = await axios.post('/api/recipes/image', formData)
+      formikRef.current?.setFieldValue('imageUrl', res?.data?.data?.url)
+    }
+    catch (e) {
+      console.log('Error uploading image!')
+    }
+  }, [])
 
   // #region Submission
   const handleSubmit = async (values: any) => {
@@ -188,8 +206,9 @@ const RecipeInput = () => {
         onSubmit={handleSubmit}
         validateOnChange={false}
         enableReinitialize
+        innerRef={formikRef}
       >
-        {(formik: FormikProps<any>) => (
+        {(formik) => (
           <form onSubmit={formik.handleSubmit}>
             <Box sx={{ px: 3, py: 2 }}>
               <Box mb={4} display="flex" justifyContent="space-between" alignItems="center">
@@ -208,13 +227,37 @@ const RecipeInput = () => {
                     <InputLabel>Recipe Image</InputLabel>
                     <Button
                       color='inherit'
-                      sx={{ flex: 1, width: '100%', borderColor: '#aaa' }}
+                      sx={{
+                        flex: 1,
+                        width: '100%',
+                        borderColor: '#aaa',
+                        position: 'relative',
+                        backgroundImage: `url("${formik.values.imageUrl}")`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        backgroundRepeat: 'no-repeat'
+                      }}
                       variant='outlined'
                       disableElevation
                       disableRipple
                       startIcon={<UploadOutlined />}
                     >
-                      Upload image
+                      {!formik.values.imageUrl && 'Upload image'}
+                      {!formik.values.imageUrl && (
+                        <input
+                          type="file"
+                          accept="image/*"
+                          style={{
+                            position: 'absolute',
+                            inset: 0,
+                            opacity: 0,
+                            cursor: 'pointer',
+                            width: '100%',
+                            height: '100%',
+                          }}
+                          onChange={handleFileChange}
+                        />
+                      )}
                     </Button>
                   </Stack>
                 </Grid>

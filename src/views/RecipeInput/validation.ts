@@ -1,6 +1,7 @@
 import * as Yup from 'yup'
 
 const validationSchema = Yup.object().shape({
+  imageUrl: Yup.string(),
   name: Yup.string().required("Recipe name is required").max(40, "Cannot exceed 40 characters"),
   category: Yup.mixed().required("Recipe category is required"),
   description: Yup.string().max(400, "Cannot exceed 400 characters"),
