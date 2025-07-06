@@ -93,7 +93,7 @@ const RecipeInput = () => {
     formData.append('file', file);
     try {
       const res = await axios.post('/api/recipes/image', formData)
-      formikRef.current?.setFieldValue('imageUrl', res?.data?.data?.url)
+      formikRef.current?.setFieldValue('imageUrl', res?.data?.data?.public_id)
     }
     catch (e) {
       console.log('Error uploading image!')
@@ -236,7 +236,7 @@ const RecipeInput = () => {
                         width: '100%',
                         borderColor: '#aaa',
                         position: 'relative',
-                        backgroundImage: `url("${formik.values.imageUrl}")`,
+                        backgroundImage: `url("${process.env.NEXT_PUBLIC_CLOUDINARY_HOST_NAME}${formik.values.imageUrl}")`,
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                         backgroundRepeat: 'no-repeat'

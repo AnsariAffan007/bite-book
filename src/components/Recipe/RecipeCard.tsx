@@ -35,7 +35,7 @@ const RecipeCard = ({ image, recipeName, userName, description, categoryName }: 
       <CardMedia
         component="img"
         height="250"
-        image={image}
+        image={`${process.env.NEXT_PUBLIC_CLOUDINARY_HOST_NAME}${image}`}
         alt="Paella dish"
       />
       <CardContent>
