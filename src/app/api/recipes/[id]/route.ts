@@ -85,6 +85,12 @@ export async function DELETE(_req: Request, { params }: { params: { id: string }
     }
 
     const recipeId: any = params.id
+    
+    const recipeImage = await db.select({ image: recipesTable.image }).from(recipesTable).where(eq(recipesTable.id, recipeId))
+    if (recipeImage[0].image) {
+      await cloudinary.uploader.destroy(recipeImage[0].image, { invalidate: true })
+    }
+
     await db
       .delete(recipesTable)
       .where(eq(recipesTable.id, recipeId))
