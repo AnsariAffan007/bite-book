@@ -1,13 +1,7 @@
 import { NextResponse } from "next/server"
-import { v2 as cloudinary } from 'cloudinary'
 import { cookies } from "next/headers";
 import { authenticateSession } from "@/utils/sessions";
-
-cloudinary.config({
-  cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
-  api_secret: process.env.NEXT_PUBLIC_CLOUDINARY_API_SECRET,
-});
+import cloudinary from "@/utils/cloudinary";
 
 export async function POST(req: Request) {
   try {
@@ -60,9 +54,10 @@ export async function DELETE(req: Request) {
       return NextResponse.json({ message: message }, { status: 401 })
     }
 
-    const body = await req.json()
+    const { searchParams } = new URL(req.url);
+    const publicId = searchParams.get('public_id') || '';
 
-    await cloudinary.uploader.destroy(body.public_id, { invalidate: true })
+    await cloudinary.uploader.destroy(publicId, { invalidate: true })
 
     return new Response(null, { status: 204 })
   }

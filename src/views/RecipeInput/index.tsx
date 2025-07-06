@@ -101,7 +101,14 @@ const RecipeInput = () => {
   }, [])
 
   const handleImageDelete = useCallback(async () => {
-
+    if (!formikRef.current?.values.imageUrl) return;
+    try {
+      await axios.delete(`/api/recipes/image?public_id=${formikRef.current?.values?.imageUrl}`)
+      formikRef.current?.setFieldValue('imageUrl', '')
+    }
+    catch (e) {
+      console.log("Error deleting image!", e)
+    }
   }, [])
 
   // #region Submission
