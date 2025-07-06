@@ -36,6 +36,7 @@ const RecipesPage = async () => {
                   style={{ textDecoration: "none" }}
                 >
                   <RecipeCard
+                    image={recipe.image}
                     recipeName={recipe.name}
                     userName={recipe.userName}
                     description={recipe.description}

@@ -33,7 +33,7 @@ const Layout = async ({ children, params }: any) => {
     >
       <Box position="relative" height={350} display="flex" alignItems="center">
         <img
-          src='/images/food/sandwich.png'
+          src={recipe?.recipes?.image}
           width='100%'
           height='100%'
           style={{

@@ -112,6 +112,7 @@ const Home: React.FC<any> = ({ success, message, response }) => {
                 <Grid key={i} item xs={12} sm={6} md={4} lg={3}>
                   <Link href={`/recipes/${r.id}/details`} style={{ textDecoration: "none" }}>
                     <RecipeCard
+                      image={r.image}
                       recipeName={r.name}
                       userName={r.userName}
                       description={r.description}

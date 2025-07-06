@@ -21,7 +21,7 @@ const palette = {
   },
 }
 
-const RecipeCard = ({ recipeName, userName, description, categoryName }: any) => {
+const RecipeCard = ({ image, recipeName, userName, description, categoryName }: any) => {
 
   return (
     <Card
@@ -35,7 +35,7 @@ const RecipeCard = ({ recipeName, userName, description, categoryName }: any) =>
       <CardMedia
         component="img"
         height="250"
-        image="/images/food/fried-salmon-steak-cooked-green.png"
+        image={image}
         alt="Paella dish"
       />
       <CardContent>
