@@ -3,6 +3,7 @@ import { categoriesTable } from "@/db/schemas/categories";
 import { ingredientsTable } from "@/db/schemas/ingredients";
 import { recipesTable } from "@/db/schemas/recipes";
 import { usersTable } from "@/db/schemas/users";
+import cloudinary from "@/utils/cloudinary";
 import { authenticateSession } from "@/utils/sessions";
 import { eq } from "drizzle-orm";
 import { cookies } from "next/headers";
@@ -44,6 +45,14 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
     const body = await req.json();
     const recipeId: any = params.id;
 
+    // Delete image from cloudinary
+    if (body.deleteImage) {
+      const recipeImage = await db.select({ image: recipesTable.image }).from(recipesTable).where(eq(recipesTable.id, recipeId))
+      if (recipeImage[0].image) {
+        await cloudinary.uploader.destroy(recipeImage[0].image, { invalidate: true })
+      }
+    }
+
     // Updating recipe details
     await db
       .update(recipesTable)
@@ -58,7 +67,6 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
         idealServings: body?.servings,
       })
       .where(eq(recipesTable.id, recipeId))
-
 
     return NextResponse.json({ message: "Recipe updated successfully" }, { status: 200 });
   }

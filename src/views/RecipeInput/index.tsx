@@ -58,11 +58,13 @@ const RecipeInput = () => {
     return pathArray[recipesPathIndex + 1]
   }, [pathname])
 
+  const initialImageRef = useRef<string | null>(null)
   async function fetchRecipe() {
     setLoading(true)
     try {
       const res = await axios.get(`/api/recipes/${recipeId}`);
       if (res?.data?.data) {
+        initialImageRef.current = res?.data?.data?.recipes?.image || ''
         setInitialValues({
           imageUrl: res?.data?.data?.recipes?.image,
           name: res?.data?.data?.recipes?.name,
@@ -101,14 +103,10 @@ const RecipeInput = () => {
   }, [])
 
   const handleImageDelete = useCallback(async () => {
-    if (!formikRef.current?.values.imageUrl) return;
-    try {
-      await axios.delete(`/api/recipes/image?public_id=${formikRef.current?.values?.imageUrl}`)
-      formikRef.current?.setFieldValue('imageUrl', '')
-    }
-    catch (e) {
-      console.log("Error deleting image!", e)
-    }
+    formikRef.current?.setFieldValue('imageUrl', '')
+    if (initialImageRef.current) {
+      formikRef.current?.setFieldValue('deleteImage', true)
+    };
   }, [])
 
   // #region Submission
