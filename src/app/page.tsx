@@ -2,6 +2,8 @@ import Home from "@/views/Public/Home"
 import axios from "axios"
 import { headers } from "next/headers"
 
+export const dynamic = 'force-dynamic'
+
 const getRecipes = async () => {
   const host = headers().get('host')
   const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https'

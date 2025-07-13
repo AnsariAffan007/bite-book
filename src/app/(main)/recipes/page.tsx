@@ -6,6 +6,8 @@ import { headers } from 'next/headers';
 import Link from 'next/link';
 import { Suspense } from 'react';
 
+export const dynamic = 'force-dynamic'
+
 const getRecipes = async () => {
   const host = headers().get('host')
   const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https'
