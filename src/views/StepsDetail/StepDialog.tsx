@@ -140,8 +140,6 @@ const StepDialog: React.FC<StepDialogProps> = ({ open, step, nodes, recipeIngred
                                   type='number'
                                   inputProps={{
                                     step: 0.01,
-                                    max: 20,
-                                    min: 0
                                   }}
                                 />
                               </Stack>
