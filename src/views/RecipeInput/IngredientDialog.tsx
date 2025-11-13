@@ -99,8 +99,7 @@ const IngredientDialog: React.FC<IngredientDialog> = ({ open, handleClose, handl
                         size='small'
                         type='number'
                         inputProps={{
-                          step: 0.01,
-                          max: 20
+                          step: 0.01
                         }}
                         placeholder='Enter Ingredient Quantity'
                         error={Boolean(formik.errors?.quantity)}
